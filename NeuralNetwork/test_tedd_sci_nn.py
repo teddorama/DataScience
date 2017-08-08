@@ -1,19 +1,17 @@
 import zipfile
 import numpy as np
 
-import tedd_sci
+import tedd_sci_nn
 
 
-n = tedd_sci.NeuralNetwork(784, 100, 10, 0.3)
+n = tedd_sci_nn.NeuralNetwork(784, 100, 10, 0.3)
 training_data_file = ''
-with zipfile.ZipFile('mnist_dataset/mnist_train.zip', 'r') as z:
+
+with zipfile.ZipFile('../DataSets/mnist_dataset/mnist_train.zip', 'r') as z:
     training_data_file = z.open('mnist_train.csv', "r")
 
 
-
-#training_data_file = open("DataScience/NeuralNetwork/mnist_dataset/mnist_train_100.csv", "r")
-#training_data_file = open("mnist_dataset/mnist_train_100.csv", "r")
-#training_data_file = open("mnist_dataset/mnist_train.csv", "r")
+#training_data_file = open("../DataSets/mnist_dataset/mnist_train_100.csv", "r")
 training_data_list = training_data_file.readlines()
 training_data_file.close()
 
@@ -33,9 +31,8 @@ for e in range(epochs):
         pass
     pass
 
-#test_data_file = open("DataScience/NeuralNetwork/mnist_dataset/mnist_test_10.csv", "r")
-#test_data_file = open("mnist_dataset/mnist_test_10.csv", "r")
-test_data_file = open("mnist_dataset/mnist_test.csv", "r")
+#test_data_file = open("../DataSets/mnist_dataset/mnist_test_10.csv", "r")
+test_data_file = open("../DataSets/mnist_dataset/mnist_test.csv", "r")
 test_data_list = test_data_file.readlines()
 test_data_file.close()
 

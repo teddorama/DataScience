@@ -35,7 +35,12 @@ class NeuralNetwork:
         output_errors = self.targets - self.final_outputs
         hidden_errors = np.dot(self.who.T, output_errors)
 
-        self.who += self.lr * np.dot(output_errors * self.final_outputs * (1.0-self.final_outputs), np.transpose(self.hidden_outputs))
+        self.who += self.lr \
+                    * np.dot(
+                            output_errors * self.final_outputs 
+                            * (1.0-self.final_outputs)
+                            , np.transpose(self.hidden_outputs)
+                            )
         self.wih += self.lr * np.dot(hidden_errors * self.hidden_outputs * (1.0-self.hidden_outputs), np.transpose(self.inputs))
 
         pass
@@ -57,8 +62,7 @@ if __name__ == "__main__":
     print(n.wih)
     print(n.query([1.0, 0.5, -1.5]))
 
-    #data_file = open("DataScience/NeuralNetwork/mnist_dataset/mnist_train_100.csv", "r")
-    data_file = open("mnist_dataset/mnist_train_100.csv", "r")
+    data_file = open("../DataSets/mnist_dataset/mnist_train_100.csv", "r")
     data_list = data_file.readlines()
     data_file.close()
 
