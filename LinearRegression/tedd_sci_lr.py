@@ -143,7 +143,7 @@ class LinearRegression:
         self.show_coef(n, _w, _b)
 
     def lr_tedd_4(self, w=1, b=1, n=3000, lr_rate=0.1):
-        #@TODO : 초기 할당값을 약간 크게 흔들다가 점차 logn으로 작게 수렴하게 해보자
+        #@TODO : O(Ln) Step Algorithm for getting coef
         _w = []
         _b = []
 
@@ -155,7 +155,7 @@ class LinearRegression:
             w = self._get_opt_weight(w, b, dw, 10)
 
             db = lr_rate * np.sum(err * 1) / self._x_len
-            b = self._get_opt_bias(w, b, db)
+            b = self._get_opt_bias(w, b, db, 10)
 
             _w.append(w)
             _b.append(b)
@@ -189,19 +189,22 @@ class LinearRegression:
         else:
             return self._get_opt_weight(w-dw, b, dw/2, cnt)
 
-    def _get_opt_bias(self, w, b, db):
+    def _get_opt_bias(self, w, b, db, cnt):
         cost = self._get_cost(self._get_pred(w, b))
         cost_db_plus = self._get_cost(self._get_pred(w, b+db))
         cost_db_minus = self._get_cost(self._get_pred(w, b-db))
 
-        if cost <= cost_db_plus and cost <= cost_db_minus:
+        if (cnt == 0):
             return b
+
+        cnt -= 1
+
+        if cost <= cost_db_plus and cost <= cost_db_minus:
+            return self._get_opt_bias(w, b, db/2, cnt)
         elif cost_db_plus <= cost_db_minus:
-#            return self._get_opt_weight(w, b+db, db/2)
-            return b+db
+            return self._get_opt_bias(w, b+db, db/2, cnt)
         else:
-#            return self._get_opt_weight(w, b-db, db/2)
-            return b-db
+            return self._get_opt_bias(w, b-db, db/2, cnt)
 
     def show_graph(self, x=[], y=[], label='', w=0, b=0):
         print("#############################################################")
@@ -223,13 +226,13 @@ class LinearRegression:
         print(b[:5])
         print("#############################################################")
 
-lr = LinearRegression(datasets.load_diabetes(), 2)
-#lr = LinearRegression(datasets.load_boston(), 12)
+#lr = LinearRegression(datasets.load_diabetes(), 2)
+lr = LinearRegression(datasets.load_boston(), 12)
 lr.lr_standard()
 lr.lr_sgd()
 lr.lr_hacker(5, 1, 7000)
 lr.lr_tedd_3(1, 1, 7000, 0.1)
-lr.lr_tedd_4(1, 1, 300, 1)
+lr.lr_tedd_4(1, 1, 2000, 1)
 
 
 
